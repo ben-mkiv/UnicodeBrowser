@@ -58,15 +58,7 @@ TSharedRef<SDockTab> FUnicodeBrowserModule::OnSpawnPluginTab(FSpawnTabArgs const
 	return SNew(SDockTab)
 		.TabRole(ETabRole::NomadTab)
 		[
-			SNew(SVerticalBox)
-			+ SVerticalBox::Slot()
-			.FillHeight(1.0f)
-			.FillContentHeight(1.0f)
-			.HAlign(HAlign_Fill)
-			.VAlign(VAlign_Fill)
-			[
-				SNew(SUnicodeBrowserWidget)
-			]
+			SNew(SUnicodeBrowserWidget)			
 		];
 }
 

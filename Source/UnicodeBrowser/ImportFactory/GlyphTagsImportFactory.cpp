@@ -23,8 +23,13 @@ UGlyphTagsImportFactory::UGlyphTagsImportFactory(FObjectInitializer const& Objec
 
 bool UGlyphTagsImportFactory::CanReimport(UObject* Obj, TArray<FString>& OutFilenames)
 {
-	UDataAsset_FontTags const* Object = Cast<UDataAsset_FontTags>(Obj);
-	return IsValid(Object) && FactoryCanImport(Object->SourceFile);
+	if(UDataAsset_FontTags const* Object = Cast<UDataAsset_FontTags>(Obj))
+	{
+		OutFilenames.Add(Object->SourceFile);
+		return IsValid(Object) && FactoryCanImport(Object->SourceFile);
+	}
+
+	return false;
 };
 
 void UGlyphTagsImportFactory::SetReimportPaths(UObject* Obj, TArray<FString> const& NewReimportPaths)
@@ -38,7 +43,8 @@ void UGlyphTagsImportFactory::SetReimportPaths(UObject* Obj, TArray<FString> con
 
 bool UGlyphTagsImportFactory::FactoryCanImport(FString const& Filename)
 {
-	FString JsonString;
+	FString JsonString = "";
+	
 	if (!FFileHelper::LoadFileToString(JsonString, *Filename))
 		return false;
 
@@ -46,7 +52,7 @@ bool UGlyphTagsImportFactory::FactoryCanImport(FString const& Filename)
 	auto const Reader = TJsonReaderFactory<>::Create(JsonString);
 	FJsonSerializer::Deserialize(Reader, JsonObject);
 
-	return JsonObject->HasField(TEXT("format")) && JsonObject->GetStringField(TEXT("format")) == "UnicodeBrowserGlyphTags_V1";
+	return JsonObject->HasTypedField<EJson::String>(TEXT("format")) && JsonObject->GetStringField(TEXT("format")) == TEXT("UnicodeBrowserGlyphTags_V1");
 }
 
 UObject* UGlyphTagsImportFactory::ImportObject(UClass* InClass, UObject* InOuter, FName const InName, EObjectFlags const InFlags, FString const& Filename, TCHAR const* Parms, bool& OutCanceled)

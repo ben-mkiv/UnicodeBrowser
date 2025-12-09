@@ -160,6 +160,9 @@ bool UDataAsset_FontTags::ImportFromJson(FString Filename)
 	if (Glyphs.IsEmpty())
 		return false;
 
+	// flush current entries (e.g. on reimport there might be existing data)
+	Characters.Empty();
+	
 	for (TSharedPtr<FJsonValue> const& GlyphValue : Glyphs)
 	{
 		TSharedPtr<FJsonObject> const Glyph = GlyphValue->AsObject();

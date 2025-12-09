@@ -39,17 +39,17 @@ void SUnicodeBlockRangeSelector::Construct(FArguments const& InArgs)
 						return FText::GetEmpty();
 
 					int32 const Num = UnicodeBrowser.Pin().Get()->Rows.Contains(Range.Index) ? UnicodeBrowser.Pin().Get()->Rows.FindChecked(Range.Index).Num() : 0;
-					return FText::FromString(FString::Printf(TEXT("%s (%d)"), *Range.DisplayName.ToString(), Num));
+					return FText::FromString(FString::Printf(TEXT("%s (%d)"), *Range.GetDisplayName().ToString(), Num));
 				}
 			)
 			.ToolTipText(
 				FText::FromString(
 					FString::Printf(
 						TEXT("%s: Range U+%-06.04X Codes U+%-06.04X - U+%-06.04X"),
-						*Range.DisplayName.ToString(),
+						*Range.GetDisplayName().ToString(),
 						Range.Index,
-						Range.Range.GetLowerBoundValue(),
-						Range.Range.GetUpperBoundValue()
+						Range.GetRange().GetLowerBoundValue(),
+						Range.GetRange().GetUpperBoundValue()
 					)
 				)
 			)
@@ -106,7 +106,7 @@ void SUnicodeBlockRangeSelector::SetRanges(TArray<EUnicodeBlockRange> const& Ran
 			continue;
 		}
 
-		if (CheckboxIndices[Range.Index], RangesToSet.Contains(Range.Index))
+		if (RangesToSet.Contains(Range.Index))
 		{
 			CheckBoxList->SetItemChecked(CheckboxIndices[Range.Index], ECheckBoxState::Checked);
 		}

@@ -13,12 +13,16 @@ void SUnicodeCharacterInfo::Construct(FArguments const& InArgs)
 {
 	SInvalidationPanel::Construct(SInvalidationPanel::FArguments());
 	SetCanCache(true);
-	SetRow(InArgs._Row);
+	
+	if(InArgs._Row.IsValid())
+	{
+		SetRow(InArgs._Row);
+	}
 }
 
 void SUnicodeCharacterInfo::SetRow(TSharedPtr<FUnicodeBrowserRow> InRow)
 {
-	if(!InRow.IsValid())
+	if(!InRow.IsValid() || !InRow->bHasValidCharacter)
 		return;
 
 	FText TagsText = FText::GetEmpty();
@@ -29,9 +33,11 @@ void SUnicodeCharacterInfo::SetRow(TSharedPtr<FUnicodeBrowserRow> InRow)
 	}
 
 	FString BlockRangeName = "";
-	if(FUnicodeBlockRange const *Range = UnicodeBrowser::GetUnicodeBlockRanges().FindByPredicate([Needle = InRow->BlockRange.Get(EUnicodeBlockRange::ControlCharacter)](FUnicodeBlockRange const &Range){ return Range.Index == Needle; }))
-	{
-		BlockRangeName = *Range->DisplayName.ToString();	
+	if(InRow->BlockRange){
+		if(FUnicodeBlockRange const *Range = UnicodeBrowser::GetUnicodeBlockRanges().FindByPredicate([Needle = InRow->BlockRange.Get(EUnicodeBlockRange::ControlCharacter)](FUnicodeBlockRange const &Range){ return Range.Index == Needle; }))
+		{
+			BlockRangeName = *Range->GetDisplayName().ToString();	
+		}
 	}
 	
 	SetContent(

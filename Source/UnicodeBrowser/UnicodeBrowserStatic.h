@@ -8,8 +8,8 @@ namespace UnicodeBrowser
        TCHAR constexpr InvalidSubChar = TEXT('\uFFFD');
        TOptional<EUnicodeBlockRange> GetUnicodeBlockRangeFromChar(int32 const CharCode);
 
-       static TArrayView<FUnicodeBlockRange const> Ranges; // all known Unicode ranges
-       TArrayView<FUnicodeBlockRange const> GetUnicodeBlockRanges();
+       static TConstArrayView<FUnicodeBlockRange const> Ranges; // all known Unicode ranges
+       TConstArrayView<FUnicodeBlockRange const> GetUnicodeBlockRanges();
 
        static FString GetUnicodeCharacterName(int32 CharCode);
 

@@ -3,6 +3,7 @@
 #include "Fonts/UnicodeBlockRange.h"
 
 #include "Framework/Application/SlateApplication.h"
+#include "Internationalization/TextChar.h"
 
 class FUnicodeBrowserRow : public TSharedFromThis<FUnicodeBrowserRow>
 {
@@ -12,11 +13,15 @@ public:
 		BlockRange(BlockRangeIn),
 		FontInfo(FontInfoIn)
 	{
-		FUnicodeChar::CodepointToString(Codepoint, Character);
+		if(Codepoint != -1)
+		{
+			bHasValidCharacter = FTextChar::ConvertCodepointToString(Codepoint, Character);	
+		}		
 	}
 
 	FString Character;
-	int32 Codepoint = 0;
+	bool bHasValidCharacter = false;
+	int32 Codepoint = -1;
 	TOptional<EUnicodeBlockRange> BlockRange;
 
 	bool bFilteredByTag = false;

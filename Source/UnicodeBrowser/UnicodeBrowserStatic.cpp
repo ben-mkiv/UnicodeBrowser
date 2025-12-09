@@ -11,7 +11,7 @@ TOptional<EUnicodeBlockRange> UnicodeBrowser::GetUnicodeBlockRangeFromChar(int32
 {
 	for (auto const& BlockRange : FUnicodeBlockRange::GetUnicodeBlockRanges())
 	{
-		if (BlockRange.Range.Contains(CharCode))
+		if (BlockRange.GetRange().Contains(CharCode))
 		{
 			return BlockRange.Index;
 		}
@@ -25,12 +25,12 @@ TArrayView<FUnicodeBlockRange const> UnicodeBrowser::GetUnicodeBlockRanges()
 	if (Ranges.IsEmpty())
 	{
 		Ranges = FUnicodeBlockRange::GetUnicodeBlockRanges();
-		Ranges.StableSort(
+		/*Ranges.Sort(
 			[](FUnicodeBlockRange const& A, FUnicodeBlockRange const& B)
 			{
-				return A.DisplayName.CompareTo(B.DisplayName) < 0;
+				return A.GetDisplayName().CompareTo(B.GetDisplayName()) < 0;
 			}
-		);
+		);*/
 	}
 	return Ranges;
 }

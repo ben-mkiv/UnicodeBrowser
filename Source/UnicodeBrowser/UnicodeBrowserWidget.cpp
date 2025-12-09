@@ -571,7 +571,7 @@ void SUnicodeBrowserWidget::PopulateSupportedCharacters()
 		RowsRaw.Add(Range.Index);
 		TArray<TSharedPtr<FUnicodeBrowserRow>>& RangeArray = RowsRaw.FindChecked(Range.Index);
 
-		for (int CharCode = Range.Range.GetLowerBound().GetValue(); CharCode <= Range.Range.GetUpperBound().GetValue(); ++CharCode)
+		for (int CharCode = Range.GetRange().GetLowerBound().GetValue(); CharCode <= Range.GetRange().GetUpperBound().GetValue(); ++CharCode)
 		{
 			auto Row = MakeShared<FUnicodeBrowserRow>(CharCode, Range.Index, &CurrentFont);
 

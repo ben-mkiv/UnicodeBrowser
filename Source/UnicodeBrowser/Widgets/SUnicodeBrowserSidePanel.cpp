@@ -87,7 +87,8 @@ void SUnicodeBrowserSidePanel::Construct(FArguments const& InArgs)
 					]
 					.BodyContent()
 					[
-						SAssignNew(CurrentCharacterDetails, SUnicodeCharacterInfo).Row(UnicodeBrowser.Pin().Get()->CurrentRow)
+						SAssignNew(CurrentCharacterDetails, SUnicodeCharacterInfo)
+						.Row(UnicodeBrowser.Pin().Get()->CurrentRow)
 					]
 				]
 				+ SVerticalBox::Slot()
